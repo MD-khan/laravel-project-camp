@@ -31,13 +31,26 @@ class ProjectTest extends TestCase
     public function a_project_requires_a_title()
     {
         $attrubutes = factory('App\Project')->raw(['title'=>'']);
-        $this->post('/projets', $attrubutes)->assertSessionHasErrors('title');
+
+        $this->post('/projects', $attrubutes)->assertSessionHasErrors('title');
     }
 
     /** @test */
     public function a_project_requires_a_description()
-    {    $attrubutes = factory('App\Project')->raw(['description'=>'']);
-        $this->post('/projets', $attrubutes)->assertSessionHasErrors('description ');
+    {    
+        $attrubutes = factory('App\Project')->raw(['description'=>'']);
+
+        $this->post('/projects', $attrubutes)->assertSessionHasErrors('description ');
+    }
+
+    /** @test */
+    public function a_project_requires_an_owner()
+    {    
+        $this->withoutExceptionHandling();
+
+        $attrubutes = factory('App\Project')->raw();
+
+        $this->post('/projects', $attrubutes)->assertRedirect('login');
     }
 
 
@@ -48,9 +61,12 @@ class ProjectTest extends TestCase
 
         $project = factory('App\Project')->create();
 
-        $this->get('/projects/' . $project->id)
-            ->assertSee($project->title)
-            ->assertSee($project->description);
+        // $this->get('/projects/' . $project->id)
+        //     ->assertSee($project->title)
+        //     ->assertSee($project->description);
+        $this->get($project->path())
+        ->assertSee($project->title)
+        ->assertSee($project->description);
     }
 
 }

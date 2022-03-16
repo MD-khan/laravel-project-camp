@@ -10,7 +10,7 @@
     <h1> {{ $project->title }}</h1>
 
     <div>
-        {{ $project->description}}
+        {{ $project->descriptiot}}
     </div>
     
 </body>

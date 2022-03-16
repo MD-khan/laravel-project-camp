@@ -15,11 +15,17 @@ class ProjectController extends Controller
 
     public function store()
     {
+        #dd("here we are");
         // validae
         $attributes = request()->validate(
             ['title'=> 'required'],
             ['description' => 'required']
         );
+
+        $attributes['owner_id'] = auth()->id();
+
+        #dd($attributes);
+
         // persist
         Project::create($attributes);
 
